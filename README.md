@@ -7,7 +7,7 @@ OpenMC-LOBOS is a sibling project to [OpenMC-PRISM](https://github.com/light0vij
 
 The main change is in **how the BO process is initialised and guided**. Instead of relying only on Latin Hypercube Sampling (LHS) to generate space-filling points without any physics-based preference, OpenMC-LOBOS introduces an LLM at two stages of the optimisation. First, it generates physically motivated initial layouts, and second, it adjusts the search bounds during the BO iterations.
 
-The underlying optimisation and physics workflow remains unchanged. The LLM is not replacing OpenMC, the GP surrogate, or Expected Improvement. It is only used to influence where the optimisation starts and how the search region is adjusted as the run progresses. See [*The LLM in the loop*](#the-llm-in-the-loop) below for a detailed explanation of what the LLM does and what remains unchanged.
+The underlying optimisation and physics workflow remains unchanged. The LLM is not replacing OpenMC, the GP surrogate, or Expected Improvement. It is only used to influence where the optimisation starts and how the search region is adjusted as the run progresses.
 
 
 ---
@@ -93,7 +93,7 @@ This also makes it possible to inspect what the model actually returned, rather 
 
 At no point does the LLM directly modify OpenMC, the GP surrogate, or the Expected Improvement implementation.
 
-### Why use an LLM for seeding instead of LHS?
+### LLM for seeding instead of LHS
 
 The main reason is that LHS treats the initial samples as a purely mathematical space-filling problem. The LLM sampler allows the initial population to be biased towards regions that are already physically reasonable.
 
@@ -142,6 +142,11 @@ Full artefacts for both runs are available in `Results/`.
 
 
 ## Installation
+
+### Prerequisites
+
+- [Docker](https://docs.docker.com/get-docker/) installed and running.
+
 
 ```bash
 docker pull ghcr.io/light0vij/openmc-lobos:latest
@@ -207,4 +212,8 @@ source, which saves roughly 30 minutes of build time per image build compared to
 results above are for the 6×6 case only. The notebook scales `INITIAL_SAMPLES_LHS` (LLM seed count) and
 `BO_ITERATIONS` with `(BWR_N / 6) ** 2` so larger assemblies get proportionally more seed samples and BO iterations.
 
-## references
+## References
+
+Romano, P. K., Horelik, N. E., Herman, B. R., Nelson, A. G., Forget, B., & Smith, K. (2015). OpenMC: A State-of-the-Art Monte Carlo Code for Research and Development. *Annals of Nuclear Energy*, 82, 90–97. [https://doi.org/10.1016/j.anucene.2014.07.048](https://doi.org/10.1016/j.anucene.2014.07.048)
+
+
