@@ -22,27 +22,27 @@ openmc-lobos/
 │   ├── llm_sampler.py           ← LLM Generative Seeding — drop-in replacement for LHS initial design
 │   ├── llm_orchestrator.py      ← LLM Bounds Orchestration — reshapes the EI search box each iteration
 │   ├── gp_surrogate.py          ← Matérn-5/2 GP + Expected Improvement acquisition
-│   ├── llm_bo_loop.py           ← Bayesian Optimisation loop (pure algorithm, zero environment imports)
+│   ├── llm_bo_loop.py           ← Bayesian Optimisation loop 
 │   └── results.py               ← CSV export, convergence plots, design report
 ├── environments/                ← Physics layer — the OpenMC model lives here
 │   ├── __init__.py
 │   ├── env.py                   ← OpenMC BWR NxN model; exposes evaluate_for_bo
-│   ├── heuristics.py            ← Physics constraint counters (corner violations, adjacency pairs)
+│   ├── heuristics.py            ← Physics constraint (corner violations, adjacency pairs)
 │   ├── mapping.py                ← Symmetry mapping and enrichment grid utilities
 │   ├── bwr_vis.py                ← Assembly visualisation helpers
 │   └── bwr_report.py             ← Per-run design report generation
 ├── Notebooks/
-│   └── LLM_sampled_BO_BWR_NxN.ipynb   ← Main entry point — LLM seeding + LLM bounds orchestration + BO
-├── sampler_prompts/              ← LLM Generative Seeding prompt configs (the "how should the LLM seed" knob)
+│   └── LLM_sampled_BO_BWR_NxN.ipynb   ← Notebook — LLM seeding + LLM bounds orchestration + BO
+├── sampler_prompts/              ← LLM prompt for Generating Seeding
 │   ├── disperse_llmsampler.json
 │   ├── E_repulsion_llmsampler.json
 │   └── hybrid_E_disperse_llmsampler.json
-├── prompt2.json                  ← LLM Bounds Orchestration prompt config
+├── prompt2.json                  ← LLM prompt for Orchestration 
 ├── Results/                      ← Pre-existing sample runs, shipped in the image; new runs land here too
 ├── Dockerfile                    ← Builds the ghcr.io/light0vij/openmc-lobos image
 ├── docker-compose.yml            ← Runs JupyterLab locally on port 8888
 ├── executedownload.sh            ← Downloads ENDF/B-VIII.0 nuclear data on first container start
-├── requirements.txt              ← Python dependencies baked into the image
+├── requirements.txt              ← Python dependencies 
 ├── .dockerignore
 ├── .gitignore
 └── README.md
