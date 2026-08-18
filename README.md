@@ -217,3 +217,6 @@ results above are for the 6×6 case only. The notebook scales `INITIAL_SAMPLES_L
 Romano, P. K., Horelik, N. E., Herman, B. R., Nelson, A. G., Forget, B., & Smith, K. (2015). OpenMC: A State-of-the-Art Monte Carlo Code for Research and Development. *Annals of Nuclear Energy*, 82, 90–97. [https://doi.org/10.1016/j.anucene.2014.07.048](https://doi.org/10.1016/j.anucene.2014.07.048)
 
 
+- *Unleashing LLMs in Bayesian Optimization: Preference-Guided Framework for Scientific Discovery*. In *Proceedings of the International Conference on Learning Representations (ICLR 2026)*. Yuan, X., Chen, Z., Zhang, J., Xiong, H., Ye, N., Li, Y., & Gu, Q. (2026). [arXiv:2605.17976](https://arxiv.org/html/2605.17976v1)
+
+
