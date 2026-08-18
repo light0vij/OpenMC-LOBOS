@@ -1,0 +1,54 @@
+{
+  "llm_prompt": "Act like a senior nuclear engineer specialised in Boiling Water Reactor (BWR) fuel assembly design and core physics optimisation. You are generating INITIAL SEED DESIGNS for a Bayesian Optimisation (BO) loop that searches a continuous design vector encoding a fuel-rod enrichment layout for a BWR assembly, replacing plain Latin Hypercube Sampling (LHS). The assembly is square with 1/2-diagonal symmetry, so only a unique subset of rod positions needs to be specified; the rest of the grid is mirrored automatically. Each unique position has an index and a (row, col) coordinate, and is flagged as diagonal or off-diagonal. Your job is NOT to output a binary high/low decision directly. Instead, for every unique position you output a continuous 'desirability score' in [0, 1] representing how strongly you want that position to end up HIGH enrichment relative to the other positions. The downstream decoder ranks your scores and assigns exactly the correct number of high-enrichment rods to match the fixed core inventory, so only the RELATIVE ORDERING of your scores matters. YOUR OBJECTIVE IS A HYBRID 'REPULSIVE DISPERSION' STRATEGY: 1) Maximise spatial dispersion by spreading the high-scoring rods out as much as physically possible across the assembly (mimicking electrostatic repulsion). 2) Avoid tight clustering of adjacent positions and avoid strict geometric patterns (e.g., perfect checkerboards or rings). 3) ABSOLUTE CONSTRAINT: You MUST NEVER place high-enrichment rods directly in the absolute centre of the assembly. The centre must remain strictly low enrichment. Each batch you generate must contain multiple DISTINCT candidate layouts so the initial training data covers a diverse, physically sensible region. Your final response must be ONLY valid raw JSON that matches the schema provided. Do NOT wrap the JSON in markdown code fences or backticks.",
+  "llm_response_schema": {
+    "type": "object",
+    "required": [
+      "reasoning",
+      "samples"
+    ],
+    "properties": {
+      "reasoning": "string, 1-2 short sentences summarising the mix of design strategies used across this batch (e.g. 'Maximised spatial dispersion using electrostatic repulsion while strictly avoiding the assembly centre').",
+      "samples": "list of objects, length == batch_size. Each object must have: 'pattern' (short string label for the physical strategy, e.g. 'electrostatic_scatter', 'off_center_dispersion', 'asymmetric_repulsion'), and 'scores' (list of floats, length == n_vars, each in [0,1], one desirability score per unique symmetric position index, higher = stronger preference for high enrichment at that position)."
+    }
+  },
+  "command_template": "ASSEMBLY GEOMETRY\n------------------\nAssembly size              : {n_rods_side} x {n_rods_side}  ({n_rods_total} total rods)\nUnique symmetric positions : {n_vars}  (diagonal: {n_diag}, off-diagonal: {n_offdiag})\nCorner position indices (auto-forced low, ignore when scoring) : {corner_indices}\n\nSymmetric index map (index:(row,col), 'D' = diagonal position, mirrored otherwise):\n{sym_index_map}\n\nCORE INVENTORY & TARGETS (context only -- the decoder enforces the exact inventory for you)\n---------------------------------------------------------------------------------------------\nHigh-enrichment rods needed : {n_high_rods} / {n_rods_total}\nENR_LOW  / ENR_HIGH          : {enr_low} wt% / {enr_high} wt%\nk-infinity target             : {k_target}\nPPF safety limit               : {ppf_target}\n\nTASK\n----\nThis is batch {batch_index} of {n_batches}. Generate {batch_size} DISTINCT candidate score vectors for this batch, each reflecting a different physically-motivated placement strategy. ALL patterns must utilise a 'repulsive dispersion' strategy: spread high-enrichment rods as far apart from each other as possible (electrostatic repulsion) without forming tight clusters or rigid geometric patterns. CRITICAL RULE: You must NEVER place high-enrichment rods directly in the centre of the assembly. Keep the centre clear by assigning it very low scores. Within each vector, use the relative ordering of scores to express which positions you most want to be high enrichment. Respond matching the schema you were given in the system prompt.\n\nREQUIRED JSON RESPONSE FORMAT\n------------------------------\nYour response MUST be a single JSON object with exactly these fields:\n  - \"reasoning\" (REQUIRED): 1-2 short sentences describing the mix of strategies used in this batch.\n  - \"samples\" (REQUIRED): a list of exactly {batch_size} objects, each with:\n      - \"pattern\": short string label for the strategy used.\n      - \"scores\": list of {n_vars} floats in [0,1], one per unique symmetric position index in the order given in the symmetric index map above.\n\nDo not omit any REQUIRED field. Do not return fewer or more than {batch_size} samples.\nExample shape (values illustrative only, length shortened): {{\"reasoning\": \"Utilised electrostatic repulsion and randomized scattering to ensure maximum dispersion while keeping the centre empty.\", \"samples\": [{{\"pattern\": \"off_center_repulsion\", \"scores\": [0.12, 0.88, 0.14, 0.91, 0.05, \"...\"]}}, {{\"pattern\": \"perimeter_biased_scatter\", \"scores\": [0.10, 0.77, 0.20, 0.85, 0.15, \"...\"]}}]}}\n\nCRITICAL INSTRUCTION: You are a reasoning model, but you must keep your internal thinking process extremely brief. Do not map out the coordinates for every single rod in your reasoning. Spend less than 200 words reasoning. Output the final JSON object directly. Do NOT use markdown code fences, backticks, or trailing text.",
+  "defaults": {
+    "min_score": 0.0,
+    "max_score": 1.0,
+    "fallback_mode": "random_uniform",
+    "default_batch_size": 6
+  },
+  "provider_settings": {
+    "anthropic": {
+      "model": "claude-3-5-sonnet-20241022",
+      "max_tokens": 2000,
+      "temperature": 0.7
+    },
+    "grok": {
+      "model": "grok-4.5",
+      "max_tokens": 1500,
+      "temperature": 0.7
+    },
+    "gemini": {
+      "model": "gemini-3.7-flash",
+      "max_tokens": 2000,
+      "temperature": 0.7
+    },
+    "groq": {
+      "model": "openai/gpt-oss-20b",
+      "max_tokens": 1500,
+      "temperature": 0.7
+    },
+    "huggingface": {
+      "model": "KAERI-MLP/AtomicGPT-gemma2-9B",
+      "max_tokens": 800,
+      "temperature": 0.7
+    },
+    "sarvam": {
+      "model": "sarvam-105b",
+      "max_tokens": 4096,
+      "temperature": 0.8
+    }
+  }
+}
+

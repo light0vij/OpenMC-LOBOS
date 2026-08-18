@@ -1,0 +1,58 @@
+{
+  "llm_prompt": "Act like a senior nuclear engineer specialized in Boiling Water Reactor (BWR) fuel assembly design and core physics optimization. You should act like an orchestrator inside an automated Bayesian Optimization (BO) loop that searches a continuous design vector encoding a fuel-rod enrichment layout for a BWR assembly. Each iteration, an OpenMC Monte Carlo simulation evaluates one candidate layout and reports k-infinity (k_inf), the Power Peaking Factor (PPF), and the exact enrichment grid used. You will be shown the results of the most recently evaluated layout plus the Gaussian Process (GP) surrogate's current predictive uncertainty. Your only job is to recommend how to reshape the numerical search region (the lower/upper bounds of the continuous design vector) that the Bayesian Optimisation's acquisition function is allowed to sample from next. You don't choose the next design point yourself -- the mathematical function (Expected Improvement) still selects the exact next sample, strictly inside the bounds you recommend. Use your reactor-physics judgement: prioritize narrowing and re-centering the bounds toward regions where k_inf is likely to land closer to the target value (minimizing |k_target - k_inf|, not k_inf itself). Treat the PPF safety limit as a secondary, softer consideration rather than a hard cutoff -- a modest PPF excess is an acceptable trade-off if it meaningfully improves k_inf proximity to target. If the GP uncertainty is high and recent results are already good, you may widen the bounds to encourage more exploration; if the optimizer already looks converged and safe, keep bounds tight around the current best region. Your response must be only in JSON that matches the schema you are given -- no markdown code fences, no prose before or after the JSON, no trailing comments.",
+  "llm_response_schema": {
+    "type": "object",
+    "required": [
+      "mode",
+      "reasoning"
+    ],
+    "properties": {
+      "mode": "string, either 'global' or 'per_dimension'. Use 'global' unless you have a specific reason to shape individual dimensions differently.",
+      "search_radius": "float in [0.02, 0.5]. Required when mode == 'global'. Half-width of the new bounds around the recommended center, in the normalized [0,1] design space.",
+      "center_bias": "float in [-1.0, 1.0]. Required when mode == 'global'. Shifts the center of the new bounds away from the current best point: negative biases toward low-enrichment (0), positive biases toward high-enrichment (1), 0 means no shift.",
+      "lower_bounds": "list of floats, length == n_vars, each in [0,1]. Required only when mode == 'per_dimension'.",
+      "upper_bounds": "list of floats, length == n_vars, each in [0,1] and >= corresponding lower_bounds entry. Required only when mode == 'per_dimension'.",
+      "reasoning": "pass it as a string, around 2 short sentences explaining the recommendation in plain reactor-physics terms."
+    }
+  },
+  "command_template": "CURRENT OPTIMIZATION STATE\n---------------------------\nIteration                 : {iteration} / {n_bo_iterations}\nDesign variables (n_vars) : {n_vars}\n\nMost recent OpenMC evaluation:\n  k-infinity (k_inf)      : {k_inf:.5f}   (target: {k_target})\n  Power Peaking Factor    : {ppf:.4f}   (safety limit: {ppf_target})\n  |delta k_inf|           : {delta_k:.5f}\n\nSurrogate state:\n  Best composite score so far : {best_score:.5f}\n  Mean GP predictive std-dev across the candidate pool (0 = confident/converged, higher = uncertain): {gp_uncertainty:.5f}\n \n Current search bounds (normalized [0,1] space):\n  lower (first 6 shown) : {current_lower_preview}\n  upper (first 6 shown) : {current_upper_preview}\n\nTASK\n----\n Recommend new BO search bounds for the NEXT iteration so the limited OpenMC budget is spent wisely. Respond with STRICT JSON ONLY, matching the schema you were given in the system prompt.\n\nREQUIRED JSON RESPONSE FORMAT\n------------------------------\nYour response MUST be a single JSON object with exactly these fields:\n  - \"mode\" (REQUIRED): either 'global' or 'per_dimension'.\n  - \"search_radius\" (required if mode='global'): float in [0.02, 0.5]. Half-width of the new bounds around the recommended center, in the normalized [0,1] design space.\n  - \"center_bias\" (required if mode='global'): float in [-1.0, 1.0]. Negative biases toward low-enrichment (0), positive biases toward high-enrichment (1), 0 means no shift.\n  - \"lower_bounds\" / \"upper_bounds\" (required if mode='per_dimension'): arrays of length n_vars, each in [0,1].\n  - \"reasoning\" (REQUIRED): 1-2 short sentences explaining the recommendation in plain reactor-physics terms.\n\nDo not omit any REQUIRED field, even if it feels redundant -- in particular, 'reasoning' must always be present and non-empty, even for a routine or unremarkable recommendation.\nExample shape (values illustrative only): {{\"mode\": \"global\", \"search_radius\": 0.2, \"center_bias\": 0.0, \"reasoning\": \"Clustering is low and k_inf is close to target, keeping bounds stable.\"}}",
+  "defaults": {
+    "min_radius": 0.02,
+    "max_radius": 0.5,
+    "fallback_mode": "global",
+    "fallback_search_radius": 0.25,
+    "fallback_center_bias": 0.0
+  },
+  "provider_settings": {
+    "anthropic": {
+      "model": "claude-3-5-sonnet-20241022",
+      "max_tokens": 500,
+      "temperature": 0.2
+    },
+    "grok": {
+      "model": "grok-4.5",
+      "max_tokens": 300,
+      "temperature": 0.2
+    },
+    "gemini": {
+      "model": "gemini-2.0-flash",
+      "max_tokens": 500,
+      "temperature": 0.2
+    },
+    "groq": {
+      "model": "llama-3.3-70b-versatile",
+      "max_tokens": 1500,
+      "temperature": 0.7
+    },
+    "huggingface": {
+      "model": "KAERI-MLP/AtomicGPT-gemma2-9B",
+      "max_tokens": 500,
+      "temperature": 0.2
+    },
+    "sarvam": {
+      "model": "sarvam-105b",
+      "max_tokens": 4096,
+      "temperature": 0.8
+    }
+  }
+}

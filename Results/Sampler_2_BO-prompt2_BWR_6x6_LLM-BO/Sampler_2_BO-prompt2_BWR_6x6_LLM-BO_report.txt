@@ -1,0 +1,85 @@
+  OPTIMAL 6×6 ENRICHMENT LAYOUT (BO) — Sampler_2_BO-prompt2_BWR_6x6_LLM-BO
+======================================================================================
+  Algorithm             : BO
+  Assembly size         : 6×6 = 36 fuel pins
+  Symmetric positions   : 21  (1/2-diagonal symmetry)
+  Enrichment options    : 1.87% (Low)  /  2.53% (High)
+  High-enrichment rods  : 23 / 36
+  Low-enrichment rods   : 13  / 36
+  Average enrichment    : 2.2917 wt%
+  k∞                    : 1.26924
+  k∞ target             : 1.25
+  |Δk∞|                 : 0.01924  (1924.3 pcm)
+  PPF                   : 1.1051  (limit ≤ 1.3)
+  PPF constraint        : SATISFIED 
+  Composite score       : -60.962142
+
+======================================================================================
+  BO PARAMETERS
+======================================================================================
+  LHS samples           : 36
+  BO iterations         : 30
+  Candidate pool        : 80000
+  EI xi                 : 0.01
+  GP restarts           : 10
+  Random seed           : 42
+  Corner masking        : True
+  Adjacency penalty     : True  (weight=3.0)
+
+======================================================================================
+  GEOMETRY & MATERIAL PARAMETERS
+======================================================================================
+  Layout              : 6 × 6 = 36 fuel pins
+  Pin pitch           : 1.62 cm
+  Assembly side       : 9.7200 cm
+  Fuel radius         : 0.53 cm
+  He gap outer (IR)   : 0.54 cm
+  Clad outer (OR)     : 0.61 cm
+  T_fuel              : 900.0 K
+  T_moderator         : 560.0 K
+  ρ UO₂               : 10.4 g/cm³
+  ρ Coolant           : 0.74 g/cm³
+  ρ Clad              : 6.56 g/cm³
+
+======================================================================================
+  PER-PIN PARAMETER TABLE (36 pins)
+======================================================================================
+  Pin  Row  Col  x_ctr(cm)  y_ctr(cm)  Enr(wt%)  Material   Sym.pos
+    1    0    0     -4.050      4.050      1.87  UO2_low       YES
+    2    0    1     -2.430      4.050      2.53  UO2_high   mirror
+    3    0    2     -0.810      4.050      2.53  UO2_high   mirror
+    4    0    3      0.810      4.050      1.87  UO2_low    mirror
+    5    0    4      2.430      4.050      2.53  UO2_high   mirror
+    6    0    5      4.050      4.050      1.87  UO2_low    mirror
+    7    1    0     -4.050      2.430      2.53  UO2_high      YES
+    8    1    1     -2.430      2.430      2.53  UO2_high      YES
+    9    1    2     -0.810      2.430      1.87  UO2_low    mirror
+   10    1    3      0.810      2.430      2.53  UO2_high   mirror
+   11    1    4      2.430      2.430      1.87  UO2_low    mirror
+   12    1    5      4.050      2.430      2.53  UO2_high   mirror
+   13    2    0     -4.050      0.810      2.53  UO2_high      YES
+   14    2    1     -2.430      0.810      1.87  UO2_low       YES
+   15    2    2     -0.810      0.810      2.53  UO2_high      YES
+   16    2    3      0.810      0.810      2.53  UO2_high   mirror
+   17    2    4      2.430      0.810      2.53  UO2_high   mirror
+   18    2    5      4.050      0.810      2.53  UO2_high   mirror
+   19    3    0     -4.050     -0.810      1.87  UO2_low       YES
+   20    3    1     -2.430     -0.810      2.53  UO2_high      YES
+   21    3    2     -0.810     -0.810      2.53  UO2_high      YES
+   22    3    3      0.810     -0.810      2.53  UO2_high      YES
+   23    3    4      2.430     -0.810      1.87  UO2_low    mirror
+   24    3    5      4.050     -0.810      2.53  UO2_high   mirror
+   25    4    0     -4.050     -2.430      2.53  UO2_high      YES
+   26    4    1     -2.430     -2.430      1.87  UO2_low       YES
+   27    4    2     -0.810     -2.430      2.53  UO2_high      YES
+   28    4    3      0.810     -2.430      1.87  UO2_low       YES
+   29    4    4      2.430     -2.430      1.87  UO2_low       YES
+   30    4    5      4.050     -2.430      2.53  UO2_high   mirror
+   31    5    0     -4.050     -4.050      1.87  UO2_low       YES
+   32    5    1     -2.430     -4.050      2.53  UO2_high      YES
+   33    5    2     -0.810     -4.050      2.53  UO2_high      YES
+   34    5    3      0.810     -4.050      2.53  UO2_high      YES
+   35    5    4      2.430     -4.050      2.53  UO2_high      YES
+   36    5    5      4.050     -4.050      1.87  UO2_low       YES
+
+  High-enr count check : 23 (expected 23)

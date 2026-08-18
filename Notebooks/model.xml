@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='utf-8'?>
+<model>
+  <materials>
+    <material id="336" name="UO2_low" depletable="true" temperature="900.0">
+      <density value="10.4" units="g/cm3"/>
+      <nuclide name="U235" wo="1.87"/>
+      <nuclide name="U238" wo="98.13"/>
+      <nuclide name="O16" wo="13.414315439286867"/>
+      <nuclide name="O17" wo="0.005416105683375544"/>
+      <nuclide name="O18" wo="0.030268455029757224"/>
+    </material>
+    <material id="337" name="UO2_high" depletable="true" temperature="900.0">
+      <density value="10.4" units="g/cm3"/>
+      <nuclide name="U235" wo="2.53"/>
+      <nuclide name="U238" wo="97.47"/>
+      <nuclide name="O16" wo="13.414315439286867"/>
+      <nuclide name="O17" wo="0.005416105683375544"/>
+      <nuclide name="O18" wo="0.030268455029757224"/>
+    </material>
+    <material id="338" name="He_gap">
+      <density value="0.0015" units="g/cm3"/>
+      <nuclide name="He3" ao="2e-06"/>
+      <nuclide name="He4" ao="0.999998"/>
+    </material>
+    <material id="339" name="Zircaloy2">
+      <density value="6.56" units="g/cm3"/>
+      <nuclide name="Zr90" wo="49.64635965329019"/>
+      <nuclide name="Zr91" wo="10.947206905330978"/>
+      <nuclide name="Zr92" wo="16.91698914303833"/>
+      <nuclide name="Zr94" wo="17.517180261588436"/>
+      <nuclide name="Zr96" wo="2.8822640367520744"/>
+      <nuclide name="Sn112" wo="0.013715892931965401"/>
+      <nuclide name="Sn114" wo="0.00949908557204232"/>
+      <nuclide name="Sn115" wo="0.004936454378539517"/>
+      <nuclide name="Sn116" wo="0.21294032525705267"/>
+      <nuclide name="Sn117" wo="0.11344627635425028"/>
+      <nuclide name="Sn118" wo="0.3608256495100962"/>
+      <nuclide name="Sn119" wo="0.12905970053650567"/>
+      <nuclide name="Sn120" wo="0.49360753539792773"/>
+      <nuclide name="Sn122" wo="0.07131822271364946"/>
+      <nuclide name="Sn124" wo="0.09065085734797056"/>
+      <nuclide name="Fe54" wo="0.008468337334060282"/>
+      <nuclide name="Fe56" wo="0.1378522931693437"/>
+      <nuclide name="Fe57" wo="0.0032405529205119547"/>
+      <nuclide name="Fe58" wo="0.0004388165760840882"/>
+      <nuclide name="Cr50" wo="0.004173686622718313"/>
+      <nuclide name="Cr52" wo="0.0836993623513459"/>
+      <nuclide name="Cr53" wo="0.009673586818675185"/>
+      <nuclide name="Cr54" wo="0.0024533642072606145"/>
+      <nuclide name="Ni58" wo="0.03359885264829495"/>
+      <nuclide name="Ni60" wo="0.013387981449614781"/>
+      <nuclide name="Ni61" wo="0.0005916795426483551"/>
+      <nuclide name="Ni62" wo="0.0019174111517435849"/>
+      <nuclide name="Ni64" wo="0.000504075207698335"/>
+    </material>
+    <material id="340" name="H2O" temperature="560.0">
+      <density value="0.74" units="g/cm3"/>
+      <nuclide name="H1" ao="1.99968852"/>
+      <nuclide name="H2" ao="0.00031148"/>
+      <nuclide name="O16" ao="0.9976206"/>
+      <nuclide name="O17" ao="0.000379"/>
+      <nuclide name="O18" ao="0.0020004"/>
+      <sab name="c_H_in_H2O"/>
+    </material>
+  </materials>
+  <geometry>
+    <cell id="604" name="lo_fuel" material="336" region="-604" universe="269"/>
+    <cell id="605" name="lo_gap" material="338" region="604 -605" universe="269"/>
+    <cell id="606" name="lo_clad" material="339" region="605 -606" universe="269"/>
+    <cell id="607" name="lo_mod" material="340" region="606" universe="269"/>
+    <cell id="608" name="hi_fuel" material="337" region="-604" universe="270"/>
+    <cell id="609" name="hi_gap" material="338" region="604 -605" universe="270"/>
+    <cell id="610" name="hi_clad" material="339" region="605 -606" universe="270"/>
+    <cell id="611" name="hi_mod" material="340" region="606" universe="270"/>
+    <cell id="612" name="assembly" fill="271" region="607 -608 609 -610 611 -612" universe="272"/>
+    <lattice id="271" name="6x6_BWR_lattice">
+      <pitch>1.62 1.62</pitch>
+      <dimension>6 6</dimension>
+      <lower_left>-4.86 -4.86</lower_left>
+      <universes>
+269 270 269 270 270 269 
+270 270 270 269 270 270 
+270 270 269 270 269 270 
+270 269 270 269 270 269 
+270 269 269 270 270 270 
+269 270 270 270 270 269 </universes>
+    </lattice>
+    <surface id="604" type="z-cylinder" coeffs="0.0 0.0 0.53"/>
+    <surface id="605" type="z-cylinder" coeffs="0.0 0.0 0.54"/>
+    <surface id="606" type="z-cylinder" coeffs="0.0 0.0 0.61"/>
+    <surface id="607" type="x-plane" boundary="reflective" coeffs="-4.86"/>
+    <surface id="608" type="x-plane" boundary="reflective" coeffs="4.86"/>
+    <surface id="609" type="y-plane" boundary="reflective" coeffs="-4.86"/>
+    <surface id="610" type="y-plane" boundary="reflective" coeffs="4.86"/>
+    <surface id="611" type="z-plane" boundary="reflective" coeffs="-10.0"/>
+    <surface id="612" type="z-plane" boundary="reflective" coeffs="10.0"/>
+  </geometry>
+  <settings>
+    <run_mode>eigenvalue</run_mode>
+    <particles>50000</particles>
+    <batches>250</batches>
+    <inactive>50</inactive>
+    <source type="independent" strength="1.0" particle="neutron">
+      <space type="box">
+        <parameters>-4.86 -4.86 -10.0 4.86 4.86 10.0</parameters>
+      </space>
+    </source>
+    <output>
+      <summary>false</summary>
+    </output>
+    <temperature_method>interpolation</temperature_method>
+    <temperature_tolerance>1000.0</temperature_tolerance>
+  </settings>
+  <tallies>
+    <mesh id="68">
+      <dimension>6 6 1</dimension>
+      <lower_left>-4.86 -4.86 -10.0</lower_left>
+      <upper_right>4.86 4.86 10.0</upper_right>
+    </mesh>
+    <filter id="68" type="mesh">
+      <bins>68</bins>
+    </filter>
+    <tally id="68" name="pin_fission">
+      <filters>68</filters>
+      <scores>fission</scores>
+    </tally>
+  </tallies>
+</model>

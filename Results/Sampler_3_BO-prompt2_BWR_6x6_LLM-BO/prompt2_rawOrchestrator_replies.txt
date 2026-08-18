@@ -1,0 +1,210 @@
+=== ITERATION 1 ===
+
+{
+  "mode": "global",
+  "search_radius": 0.06,
+  "center_bias": -0.5,
+  "reasoning": "The current k_inf is 1.276, 0.026 above the 1.25 target, so a strong negative bias toward lower enrichment is needed to pull k_inf down, while the moderate PPF of 1.09 leaves room to narrow the search."
+}
+
+=== ITERATION 2 ===
+
+{"mode": "global", "search_radius": 0.16, "center_bias": -0.05, "reasoning": "k_inf is slightly above target at 1.270, so biasing the search toward lower enrichment (negative center_bias) to find a flatter k_inf gradient, while keeping the radius moderate because PPF remains well below the 1.3 limit and GP uncertainty is still high for further exploration."}
+
+=== ITERATION 3 ===
+
+{
+  "mode": "global",
+  "search_radius": 0.15,
+  "center_bias": 0.316,
+  "reasoning": "k-infinity is slightly high relative to target; shifting the center upward by ~0.32 normalized enrichment units and maintaining moderate radius should re-bias the search toward lower-k regions while retaining enough width to resolve power-peaking constraints."
+}
+
+=== ITERATION 4 ===
+
+{
+  "mode": "global",
+  "search_radius": 0.08,
+  "center_bias": -0.15,
+  "reasoning": "k_inf is 2.5% high relative to target 1.25, so bias bounds negative to reduce enrichment; PPF is 1.10 well below 1.3 limit, allowing safe downsizing. Low GP uncertainty and early-mid iteration suggest narrowing bounds to refine the high-enrichment tail and improve convergence to target."
+}
+
+=== ITERATION 5 ===
+
+{"mode":"global","search_radius":0.16,"center_bias":0.20,"reasoning":"k_inf is slightly high and trending toward the target; biasing high-enrichment while keeping bounds moderately wide encourages exploitation of favorable enrichment gradients without sacrificing exploration of the 21-dimensional space."}
+
+=== ITERATION 6 ===
+
+{
+  "mode": "global",
+  "search_radius": 0.08,
+  "center_bias": -0.15,
+  "reasoning": "k_inf is 1.267, slightly high relative to the 1.25 target, and PPF is well within the 1.3 limit, so biasing bounds downward toward lower enrichments while keeping a modest radius preserves exploration near the optimum."
+}
+
+=== ITERATION 7 ===
+
+{
+  "mode": "global",
+  "search_radius": 0.3,
+  "center_bias": -0.1,
+  "reasoning": "k_inf is 1.274, slightly above the 1.25 target; bias downward reduces enrichment while maintaining sufficient reactivity. Stiff PPF at 1.109 suggests modest local exploration to avoid power peaking."
+}
+
+=== ITERATION 8 ===
+
+{
+  "mode": "global",
+  "search_radius": 0.25,
+  "center_bias": 0.05,
+  "reasoning": "k_inf is slightly high and PPF is well below the safety limit, so we bias slightly toward lower enrichment to pull k_inf toward the 1.25 target, while retaining a moderate search radius to explore neighboring enrichment patterns for improved uniformity."
+}
+
+=== ITERATION 9 ===
+
+{
+  "mode": "global",
+  "search_radius": 0.25,
+  "center_bias": 0.05,
+  "reasoning": "k_inf is slightly high at 1.268; shift the global center slightly toward lower enrichment and narrow the radius to focus on the target region while leaving enough uncertainty-driven exploration space given the high surrogate variance."
+}
+
+=== ITERATION 10 ===
+
+{
+  "mode": "global",
+  "search_radius": 0.15,
+  "center_bias": 1.0,
+  "reasoning": "k_inf is 0.93% high and the PPF is well below the safety limit, so we bias the search toward higher enrichment to bring k_inf down to the 1.25 target, especially as the GP uncertainty is moderate and exploration should continue."
+}
+
+=== ITERATION 11 ===
+
+{
+  "mode": "global",
+  "search_radius": 0.15,
+  "center_bias": -0.1,
+  "reasoning": "The k_inf overshoot of 0.022 is modest, so biasing bounds slightly toward lower enrichment and narrowing them will prioritize targeting the 1.25 core with minimal PPF penalty."
+}
+
+=== ITERATION 12 ===
+
+{"mode": "global", "search_radius": 0.15, "center_bias": -0.3, "reasoning": "k_inf is slightly high and PPF is comfortably below the safety limit, so bias the search toward lower-enrichment space to pull k_inf down toward target while retaining a generous radius to escape local minima."}
+
+=== ITERATION 13 ===
+
+{
+  "mode": "global",
+  "search_radius": 0.1,
+  "center_bias": -0.5,
+  "reasoning": "k_inf is 21 mils above target; shifting bounds downward reduces enrichment to tighten the approach to k_target, while a modest search radius balances continued exploration against diminishing returns."
+}
+
+=== ITERATION 14 ===
+
+{"mode": "global", "search_radius": 0.1, "center_bias": -0.05, "reasoning": "k_inf is slightly above target and PPF is well below the safety limit, so bias the search toward lower enrichment to drive k_inf down while keeping a tight radius to refine the optimum."}
+
+=== ITERATION 15 ===
+
+{
+  "mode": "global",
+  "search_radius": 0.25,
+  "center_bias": 0.0,
+  "reasoning": "k_inf is slightly high but well within margin of the 1.25 target; PPF is safely below its 1.3 limit, so we keep the search region centered on the current bounds to avoid a sharp drop in k_inf while ensuring sufficient exploration with the current moderate GP uncertainty."
+}
+
+=== ITERATION 16 ===
+
+{"mode":"global","search_radius":0.15,"center_bias":-0.25,"reasoning":"k_inf is slightly high and PPF is well below the 1.3 limit, so bias bounds toward lower enrichment to tighten around k_target while using moderate width to explore the flat, low-uncertainty region."}
+
+=== ITERATION 17 ===
+
+{"mode": "global", "search_radius": 0.2, "center_bias": -0.5, "reasoning": "k_inf is 1.269, 0.019 above target, and PPF is 1.109, so bias toward lower local enrichments to reduce axial peaking, while keeping radius tight to refine k_inf closer to 1.25."}
+
+=== ITERATION 18 ===
+
+{"mode":"global","search_radius":0.125,"center_bias":0.0,"reasoning":"k_inf is within 2 pcm of target with ample PPF margin, but the high GP uncertainty (5.6%) indicates the surrogate is still poorly explored; a 12.5% global radius preserves acceptable bounds while favoring a more localized, targeted refinement of the enrichment landscape to reconcile the remaining k_inf offset."}
+
+=== ITERATION 19 ===
+
+{
+  "mode": "global",
+  "search_radius": 0.25,
+  "center_bias": 0.3,
+  "reasoning": "k_inf is slightly high but PPF is well below the safety limit, so biasing toward higher enrichment and moderately expanding the search radius lets the EI explore around the target while keeping the PPF in check."
+}
+
+=== ITERATION 20 ===
+
+{
+  "mode": "global",
+  "search_radius": 0.05,
+  "center_bias": 0.0,
+  "reasoning": "k_inf is 0.022 above target and PPF is comfortably below the 1.3 safety limit; with high surrogate uncertainty, narrow the bounds to exploit the low-enrichment side of the design space and search for a configuration that brings k_inf closer to 1.25."
+}
+
+=== ITERATION 21 ===
+
+{"mode": "global", "search_radius": 0.3, "center_bias": 0.15, "reasoning": "The k_inf is slightly high but safely below criticality; the 3.49 sigma GP uncertainty suggests substantial unmodeled exploration is needed, so the 21-D search space must be widened, biased slightly toward lower enrichments to see if we can tune back closer to the 1.25 target."}
+
+=== ITERATION 22 ===
+
+{
+  "mode": "global",
+  "search_radius": 0.18,
+  "center_bias": 0.12,
+  "reasoning": "The current k_inf is 1.273, safely below the 1.25 target, so we bias the search center slightly high to pull the mean toward target for the next iteration."
+}
+
+=== ITERATION 23 ===
+
+{"mode": "global", "search_radius": 0.18, "center_bias": -0.15, "reasoning": "k_inf is slightly above target at 1.269; biasing bounds toward lower enrichment helps drive the next sample closer to 1.25, while a 0.18 radius retains enough variance to resolve axial flattening trade-offs before the PPF approaches its 1.3 limit."}
+
+=== ITERATION 24 ===
+
+{
+  "mode": "global",
+  "search_radius": 0.15,
+  "center_bias": 0.15,
+  "reasoning": "k_inf is above target and PPF is well below the safety limit, so bias bounds toward higher enrichment to reduce |delta k_inf| and tighten the search around promising high-enrichment rods."
+}
+
+=== ITERATION 25 ===
+
+{
+  "mode": "global",
+  "search_radius": 0.15,
+  "center_bias": -0.2,
+  "reasoning": "k_inf is 0.02055 above the 1.25 target, so bias the search toward lower enrichment, but retain exploration because GP uncertainty is still high at 5.656."
+}
+
+=== ITERATION 26 ===
+
+{
+  "mode": "global",
+  "search_radius": 0.12,
+  "center_bias": -0.15,
+  "reasoning": "Current k_inf is slightly high, so bias bounds toward lower enrichment to approach 1.25; moderate radius balances continued refinement with exploration."
+}
+
+=== ITERATION 27 ===
+
+{"mode": "global", "search_radius": 0.18, "center_bias": 0.15, "reasoning": "k_inf is 0.0217 above target, so bias toward lower enrichment by shifting mean down; modest PPF headroom makes a slight 0.15 lower bias acceptable for better reactivity approach. With 3 iterations remaining, keeping the radius reasonably tight (0.18) around the current high-enrichment region prevents costly exploration and focuses the next EI points on finding the local dip in absolute k_error."}
+
+=== ITERATION 28 ===
+
+{"mode":"global","search_radius":0.22,"center_bias":0.28,"reasoning":"The recent k_inf overshoots the 1.25 target by 1.5%, so biasing the center toward slightly lower enrichment improves convergence without severely compromising PPF."}
+
+=== ITERATION 29 ===
+
+{
+  "mode": "global",
+  "search_radius": 0.15,
+  "center_bias": 0.15,
+  "reasoning": "k_inf is slightly high and the surrogate uncertainty is moderate-to-high, so bias the search toward lower enrichment regions to shrink |k_inf - 1.25| while maintaining a margin below the 1.3 PPF safety limit."
+}
+
+=== ITERATION 30 ===
+
+{"mode": "global", "search_radius": 0.15, "center_bias": 0.1, "reasoning": "The current k_inf of 1.269 is slightly high relative to the 1.25 target, so shifting the global center toward lower enrichment will re-center the search in a region more likely to reduce |delta k_inf|; maintaining a moderate search radius preserves enough exploration while the GP uncertainty of 6.24 indicates the surrogate still requires some sampling variance."}
+

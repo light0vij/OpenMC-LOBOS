@@ -1,0 +1,52 @@
+# =============================================================================
+# requirements.txt
+# Packages for k_eff criticality analysis, optimisation and sensitivity.
+#
+# KEY DECISIONS:
+#   - shimwell wheels index for pre-built OpenMC — no source compile needed
+#   - h5py==3.10.0 — matches Ubuntu 22.04 libhdf5 (1.10.x), NOT 3.11.0
+#   - GPy removed — broken sdist on Python 3.11
+#   - uncertainties added — recommended by OpenMC for k_eff uncertainty
+#   - numpy pinned for 1.26.4 - versions above 2.3.0 (including latest) was crashing
+# ===================================================================================
+
+--extra-index-url https://shimwell.github.io/wheels
+
+# OpenMC and neutronics
+openmc
+openmc_data_downloader
+openmc_data
+openmc_source_plotter
+openmc_depletion_plotter
+openmc_regular_mesh_plotter
+neutronics_material_maker[density]
+
+# Scientific core
+numpy==1.26.4        # Pinning numpy to prevent crashes; NumPy 2.0+ is incompatible with older SciPy/OpenMC numpy<2.3.0
+scipy==1.13.1
+matplotlib==3.9.1
+pandas==2.2.2
+h5py==3.10.0
+uncertainties
+
+# ML and optimisation
+scikit-learn==1.5.1
+SALib==1.5.1
+
+
+
+requests>=2.31
+google-genai
+
+tqdm                            
+rich
+
+# Jupyter
+jupyterlab
+notebook
+ipywidgets
+ipympl
+tqdm
+plotly
+seaborn
+joblib

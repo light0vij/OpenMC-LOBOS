@@ -1,0 +1,83 @@
+# =============================================================================
+# docker-compose.yml
+#
+# ACCESS:
+#   http://localhost:8888    — no password needed
+#
+# LLM API KEY:
+#   The notebook reads its LLM key from the LLM_API_KEY environment variable
+#   (never hardcode a real key in the notebook). Set it before "docker
+#   compose up", e.g.:
+#     LLM_API_KEY=your_key_here docker compose up
+#   or put LLM_API_KEY=your_key_here in a local .env file next to this file
+#   (docker compose loads .env automatically; .env is already git-ignored).
+# =============================================================================
+
+services:
+
+  openmc-jupyter:
+
+    image: ghcr.io/light0vij/openmc-lobos:latest
+
+    container_name: openmc-lobos
+
+    ports:
+      - "8888:8888"
+
+    volumes:
+
+      # Mount Notebooks/ so notebooks (and any you add) persist on the host
+      # and are browsable/editable from JupyterLab's file tree.
+      - ./Notebooks:/workspace/Notebooks
+
+      # Mount environments/ so the model-specific OpenMC wrappers imported by
+      # the notebooks are visible and editable from JupyterLab too.
+      - ./environments:/workspace/environments
+
+      # Mount openmc_bo/ (LLM sampler, GP/EI, BO loop, LLM bounds
+      # orchestrator) so it's browsable/editable from JupyterLab too.
+      - ./openmc_bo:/workspace/openmc_bo
+
+      # Mount sampler_prompts/ so the LLM Generative Seeding prompt configs
+      # can be tweaked without rebuilding the image.
+      - ./sampler_prompts:/workspace/sampler_prompts
+
+      # Mount prompt2.json — the LLM Bounds Orchestration prompt config —
+      # for the same reason.
+      - ./prompt2.json:/workspace/prompt2.json
+
+      # OpenMC result files (statepoints, tallies, plots, CSVs, reports)
+      - ./Results:/workspace/Results
+
+      # Nuclear data — stored in a named Docker volume so it only downloads
+      # once and persists across container restarts.
+      # To use existing data instead, replace with:
+      # - /path/to/your/nuclear_data:/nuclear_data
+      - nuclear_data:/nuclear_data
+
+    environment:
+      - OPENMC_CROSS_SECTIONS=/nuclear_data/cross_sections.xml
+      - JUPYTER_ENABLE_LAB=yes
+      # Passed straight through to the notebook's os.environ.get("LLM_API_KEY").
+      - LLM_API_KEY=${LLM_API_KEY:-}
+
+    # Adjust cpus to how many cores you want to dedicate to OpenMC runs.
+    # Remove deploy block entirely to use all available resources.
+    deploy:
+      resources:
+        limits:
+          cpus: "4"
+          memory: "8g"
+
+    restart: unless-stopped
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/lab"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  nuclear_data:
+    name: neutronics_nuclear_data
