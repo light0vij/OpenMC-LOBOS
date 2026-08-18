@@ -1,7 +1,6 @@
 # OpenMC-LOBOS
 
-**L**LM-**O**rchestrated **B**ayesian **O**ptimization with **S**eeding for BWR fuel-assembly enrichment layouts.
-
+<u>**L**LM-**O**rchestrated **B**ayesian **O**ptimization with **S**eeding for BWR fuel-assembly enrichment layouts.</u>
 
 OpenMC-LOBOS is a sibling project to [OpenMC-PRISM](https://github.com/light0vij/OpenMC-PRISM). It keeps the same physics model, symmetry decoding, GP-surrogate/Expected-Improvement Bayesian Optimisation (BO) loop, and heuristic constraints used in OpenMC-PRISM.
 
