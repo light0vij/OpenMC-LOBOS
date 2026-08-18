@@ -1,0 +1,114 @@
+# ===========================================================================
+# .github/workflows/docker-publish.yml
+#
+# Builds Docker image from repo root and pushes to GitHub Container Registry.
+#
+# RESULT IMAGE:
+#   ghcr.io/light0vij/openmc-lobos:latest
+#
+# REQUIRED (one-time setup):
+#   Repo → Settings → Actions → General →
+#   Workflow permissions → "Read and write permissions"
+# ===========================================================================
+
+name: Build and publish openmc-lobos Docker image
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      # Repo root IS openmc-lobos — paths are relative to repo root
+      - "Dockerfile"
+      - "requirements.txt"
+      - "executedownload.sh"
+      - "openmc_bo/**"
+      - "environments/**"
+      - "Notebooks/**"
+      - "sampler_prompts/**"
+      - "Results/**"
+      - "prompt2.json"
+      - ".github/workflows/docker-publish.yml"
+
+  # Manual trigger from Actions tab — no push needed
+  workflow_dispatch:
+
+
+# ── Permissions ───────────────────────────────────────────────────────────────
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+
+  build-and-publish:
+    name: Build and push to ghcr.io
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # ── 1. Checkout ───────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. Buildx ─────────────────────────────────────────────────────────
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # ── 3. Login to GHCR ──────────────────────────────────────────────────
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── 4. Generate tags ──────────────────────────────────────────────────
+      # Produces:
+      #   ghcr.io/light0vij/openmc-lobos:latest
+      #   ghcr.io/light0vij/openmc-lobos:main
+      #   ghcr.io/light0vij/openmc-lobos:sha-<commit>
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/openmc-lobos
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=branch
+            type=sha,prefix=sha-,format=short
+          labels: |
+            org.opencontainers.image.title=openmc-lobos
+            org.opencontainers.image.description=OpenMC + JupyterLab for k_eff criticality optimisation using LLM-guided seeding and Bayesian Optimisation
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+
+      # ── 5. Build and push ─────────────────────────────────────────────────
+      # context: .  — repo root IS openmc-lobos, no subfolder needed
+      # file: ./Dockerfile — Dockerfile is at repo root
+      # Layer cache: unchanged layers reused, subsequent builds ~2-3 min
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # ── 6. Print pull instructions ────────────────────────────────────────
+      - name: Print pull instructions
+        run: |
+          echo "==========================================="
+          echo "Image pushed successfully."
+          echo ""
+          echo "Pull on your PC:"
+          echo "  docker pull ghcr.io/${{ github.repository_owner }}/openmc-lobos:latest"
+          echo ""
+          echo "Start JupyterLab:"
+          echo "  docker compose up"
+          echo ""
+          echo "Open: http://localhost:8888"
+          echo "==========================================="
