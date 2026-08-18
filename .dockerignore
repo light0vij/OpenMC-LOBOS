@@ -1,0 +1,56 @@
+# openmc-lobos/.dockerignore
+# Files excluded from the Docker build context.
+# The build context is the openmc-lobos/ folder itself.
+
+# Git internals (never needed inside image)
+.git
+.gitignore
+.gitattributes
+
+# CI/CD config
+.github/
+
+# Local environment / secrets
+.env
+*.env
+.env.*
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Test outputs
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS / archive artefacts
+.DS_Store
+Thumbs.db
+__MACOSX/
+
+# Large local data — mounted as a volume, never baked into the image
+nuclear_data/
+workspace/
+
+# Note: Notebooks/, environments/, openmc_bo/, sampler_prompts/, Results/
+# and prompt2.json are intentionally NOT excluded — they're copied into the
+# image so the container ships with notebooks, the model-specific
+# environments, the optimisation package, the LLM sampling/orchestration
+# prompt configs, and the existing sample results out of the box.
+
+# Editor configs
+.vscode/
+.idea/
+*.swp
+*.swo
+
