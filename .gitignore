@@ -1,0 +1,31 @@
+# openmc-lobos/.gitignore
+
+# Secrets — never commit a real LLM API key
+.env
+*.env
+.env.*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+__MACOSX/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Large local data — downloaded at container startup, never committed
+nuclear_data/
