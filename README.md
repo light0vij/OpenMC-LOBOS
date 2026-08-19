@@ -161,6 +161,7 @@ or, to also persist/edit notebooks on the host:
 docker run -p 8888:8888 \
   -v /YOUR_FOLDER_PATH:/nuclear_data \
   -v /YOUR_NOTEBOOKS_PATH:/workspace/Notebooks \
+  -e OPENMC_CROSS_SECTIONS="/nuclear_data/cross_sections.xml" \
   ghcr.io/light0vij/openmc-lobos:latest
 ```
 
